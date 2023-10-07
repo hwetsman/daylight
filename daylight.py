@@ -2,6 +2,7 @@ from skyfield.api import load, Topos
 from skyfield import almanac
 from datetime import timedelta
 import streamlit as st
+import pandas as pd
 
 # Load astronomical data
 ts = load.timescale()
@@ -13,7 +14,7 @@ new_orleans = Topos(latitude_degrees=29.9511, longitude_degrees=-90.0715)
 
 # Days in each month for the year 2023 (which is not a leap year)
 days_in_month = {1: 31, 2: 28, 3: 31, 4: 30, 5: 31, 6: 30, 7: 31, 8: 31, 9: 30, 10: 31, 11: 30, 12: 31}
-
+df = pd.DataFrame()
 # Iterate through each day of the year
 for month in range(1, 13):
     for day in range(1, days_in_month[month] + 1):  # Use the number of days for each month
