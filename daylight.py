@@ -31,12 +31,12 @@ for month in range(1, 13):
             sunset_time = t[1] if y[0] else t[0]
             daylight_duration = (sunset_time.utc_datetime() - sunrise_time.utc_datetime()).seconds
             daylight_duration = timedelta(seconds=daylight_duration)
-            st.write(f"{month:02d}-{day:02d}: {daylight_duration}")
+            # st.write(f"{month:02d}-{day:02d}: {daylight_duration}")
             df[f"{month:02d}-{day:02d}",'Daylight']= daylight_duration
         elif len(t) == 1:  # Only one event occurs
-            st.write(f"{month:02d}-{day:02d}: Only one event (either sunrise or sunset)")
+            # st.write(f"{month:02d}-{day:02d}: Only one event (either sunrise or sunset)")
             df[f"{month:02d}-{day:02d}",'Daylight']= None
         else:  # No sunrise or sunset
-            st.write(f"{month:02d}-{day:02d}: No sunrise or sunset")
+            # st.write(f"{month:02d}-{day:02d}: No sunrise or sunset")
             df[f"{month:02d}-{day:02d}",'Daylight']= None
 st.write(df)
