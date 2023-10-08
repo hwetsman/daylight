@@ -15,6 +15,7 @@ new_orleans = Topos(latitude_degrees=29.9511, longitude_degrees=-90.0715)
 col1,col2=st.columns([1,4])
 a = col2.empty()
 max_light_box = col1.selectbox('Choose minutes for max lightbox',[5,10,15,20,25,30,35,40])
+light_box_interval = col1.selectbox('Choose an interval for light box time increase',[1,2,3,4,5])
 # Days in each month for the year 2023 (which is not a leap year)
 days_in_month = {1: 31, 2: 28, 3: 31, 4: 30, 5: 31, 6: 30, 7: 31, 8: 31, 9: 30, 10: 31, 11: 30, 12: 31}
 df = pd.DataFrame()
@@ -44,8 +45,20 @@ for month in range(1, 13):
         else:  # No sunrise or sunset
             # st.write(f"{month:02d}-{day:02d}: No sunrise or sunset")
             df[f"{month:02d}-{day:02d}",'Daylight_minutes']= None
-a.write(df)
+df = df.reset_index(drop=False)
+df.columns = ['Date','Daylight_minutes']
+df['Date'] = pd.to_datetime('2023-' + df['Date'])
+df = df.sort_values('Date')
+# a.write(df)
 max_daylight =df.Daylight_minutes.max()
+min_daylight = df.Daylight_minutes.min()
+annual_difference = max_daylight - min_daylight
+difference_to_maxbox_ratio = int(annual_difference/max_light_box)
+minutes_to_interval_change = difference_to_maxbox_ratio * light_box_interval
 df['Delta_from_max']=max_daylight - df.Daylight_minutes
-col2.write(max_daylight)
-col2.write(df)
+df['Minutes_of_light'] = (light_box_interval*round(df.Delta_from_max/minutes_to_interval_change,0))-light_box_interval
+# df = df.drop_duplicates('Minutes_of_light',keep='first')
+display_df = df[['Date','Minutes_of_light']]
+display_df = display_df.sort_values('Date')
+display_df = display_df[display_df.Minutes_of_light>=0]
+col2.write(display_df)
