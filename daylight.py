@@ -8,10 +8,13 @@ import pandas as pd
 ts = load.timescale()
 eph = load('de421.bsp')  # Load the ephemeris file
 earth = eph['earth']  # Extract earth
-a = st.empty()
+
 # Geographic location: New Orleans, LA
 new_orleans = Topos(latitude_degrees=29.9511, longitude_degrees=-90.0715)
 
+col1,col2=st.columns([1,4])
+a = col2.empty()
+max_light_box = col1.selectbox('Choose minutes for max lightbox',[5,10,15,20,25,30,35,40])
 # Days in each month for the year 2023 (which is not a leap year)
 days_in_month = {1: 31, 2: 28, 3: 31, 4: 30, 5: 31, 6: 30, 7: 31, 8: 31, 9: 30, 10: 31, 11: 30, 12: 31}
 df = pd.DataFrame()
@@ -32,7 +35,7 @@ for month in range(1, 13):
             daylight_duration_minutes = int(daylight_duration_seconds/60)
             # daylight_duration = timedelta(seconds=daylight_duration)
             # st.write(daylight_duration_minutes)
-            a.write(f"Calculating daylight for: {month:02d}-{day:02d}",end = '\r')
+            a.write(f"Calculating daylight for: {month:02d}-{day:02d}")
             df.loc[f"{month:02d}-{day:02d}",'Daylight_minutes']= daylight_duration_minutes
             # st.write(df.loc[f"{month:02d}-{day:02d}",'Daylight'])
         elif len(t) == 1:  # Only one event occurs
@@ -44,5 +47,5 @@ for month in range(1, 13):
 a.write(df)
 max_daylight =df.Daylight_minutes.max()
 df['Delta_from_max']=max_daylight - df.Daylight_minutes
-st.write(max_daylight)
-st.write(df)
+col2.write(max_daylight)
+col2.write(df)
