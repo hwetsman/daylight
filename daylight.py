@@ -61,4 +61,7 @@ df['Minutes_of_light'] = (light_box_interval*round(df.Delta_from_max/minutes_to_
 display_df = df[['Date','Minutes_of_light']]
 display_df = display_df.sort_values('Date')
 display_df = display_df[display_df.Minutes_of_light>=0]
+display_df['Change'] = (display_df['Minutes_of_light'] != display_df['Minutes_of_light'].shift()).astype(int)
+display_df = display_df[display_df.Change==1]
+display_df=display_df[['Date','Minutes_of_light']]
 col2.write(display_df)
