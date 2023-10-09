@@ -60,7 +60,7 @@ df = df.sort_values('Date')
 max_daylight =df.Daylight_minutes.max()
 min_daylight = df.Daylight_minutes.min()
 annual_difference = max_daylight - min_daylight
-col2.write(f'The difference between the maximum and minimum of daylight at your latitude is {int(annual_difference)} minutes.')
+a.write(f'The difference between the maximum and minimum of daylight at your latitude is {int(annual_difference)} minutes.')
 difference_to_maxbox_ratio = int(annual_difference/max_light_box)
 minutes_to_interval_change = difference_to_maxbox_ratio * light_box_interval
 df['Delta_from_max']=max_daylight - df.Daylight_minutes
